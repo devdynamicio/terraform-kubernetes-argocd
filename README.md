@@ -29,13 +29,13 @@ module "argocd" {
 | Name | Version |
 |------|---------|
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 0.13.0 |
-| <a name="requirement_digitalocean"></a> [digitalocean](#requirement\_digitalocean) | >= 2.19.0 |
+| <a name="requirement_helm"></a> [helm](#requirement\_helm) | >= 1.0 |
 
 ## Providers
 
 | Name | Version |
 |------|---------|
-| <a name="provider_digitalocean"></a> [digitalocean](#provider\_digitalocean) | >= 2.19.0 |
+| <a name="provider_helm"></a> [helm](#provider\_helm) | >= 1.0 |
 
 ## Modules
 
@@ -45,28 +45,27 @@ No modules.
 
 | Name | Type |
 |------|------|
-| [digitalocean_kubernetes_node_pool.this](https://registry.terraform.io/providers/digitalocean/digitalocean/latest/docs/resources/kubernetes_node_pool) | resource |
+| [helm_release.this](https://registry.terraform.io/providers/hashicorp/helm/latest/docs/resources/release) | resource |
 
 ## Inputs
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| <a name="input_auto_scale"></a> [auto\_scale](#input\_auto\_scale) | Enable auto-scaling of the number of nodes in the node pool within the given min/max range. | `bool` | `false` | no |
-| <a name="input_cluster_id"></a> [cluster\_id](#input\_cluster\_id) | The ID of the Kubernetes cluster to which the node pool is associated. | `string` | n/a | yes |
-| <a name="input_labels"></a> [labels](#input\_labels) | A map of key/value pairs to apply to nodes in the pool. The labels are exposed in the Kubernetes API as labels in the metadata of the corresponding Node resources. | `map(string)` | `null` | no |
-| <a name="input_max_nodes"></a> [max\_nodes](#input\_max\_nodes) | If auto-scaling is enabled, this represents the maximum number of nodes that the node pool can be scaled up to. | `number` | `null` | no |
-| <a name="input_min_nodes"></a> [min\_nodes](#input\_min\_nodes) | If auto-scaling is enabled, this represents the minimum number of nodes that the node pool can be scaled down to. | `number` | `null` | no |
-| <a name="input_name"></a> [name](#input\_name) | A name for the node pool. | `string` | n/a | yes |
-| <a name="input_node_count"></a> [node\_count](#input\_node\_count) | The number of Droplet instances in the node pool. If auto-scaling is enabled, this should only be set if the desired result is to explicitly reset the number of nodes to this value. If auto-scaling is enabled, and the node count is outside of the given min/max range, it will use the min nodes value. | `number` | `null` | no |
-| <a name="input_size"></a> [size](#input\_size) | The slug identifier for the type of Droplet to be used as workers in the node pool. | `string` | n/a | yes |
-| <a name="input_tags"></a> [tags](#input\_tags) | A list of tag names to be applied to the Kubernetes cluster. | `set(string)` | `null` | no |
-| <a name="input_taint"></a> [taint](#input\_taint) | A list of taints applied to all nodes in the pool. | <pre>set(object(<br>    {<br>      effect = string<br>      key    = string<br>      value  = string<br>    }<br>  ))</pre> | `[]` | no |
+| <a name="input_enabled"></a> [enabled](#input\_enabled) | Variable indicating whether deployment is enabled | `bool` | `true` | no |
+| <a name="input_helm_atomic"></a> [helm\_atomic](#input\_helm\_atomic) | If set, installation process purges chart on fail. The wait flag will be set automatically if atomic is used. Defaults to false. | `bool` | `false` | no |
+| <a name="input_helm_chart_name"></a> [helm\_chart\_name](#input\_helm\_chart\_name) | Helm chart name to be installed | `string` | `"argo-cd"` | no |
+| <a name="input_helm_chart_version"></a> [helm\_chart\_version](#input\_helm\_chart\_version) | Version of the Helm chart | `string` | `"4.10.8"` | no |
+| <a name="input_helm_cleanup_on_fail"></a> [helm\_cleanup\_on\_fail](#input\_helm\_cleanup\_on\_fail) | Allow deletion of new resources created in this upgrade when upgrade fails. Defaults to false. | `bool` | `false` | no |
+| <a name="input_helm_create_namespace"></a> [helm\_create\_namespace](#input\_helm\_create\_namespace) | Create the namespace if it does not yet exist | `bool` | `true` | no |
+| <a name="input_helm_release_name"></a> [helm\_release\_name](#input\_helm\_release\_name) | Helm release name | `string` | `"argocd"` | no |
+| <a name="input_helm_repo_url"></a> [helm\_repo\_url](#input\_helm\_repo\_url) | Helm repository | `string` | `"https://argoproj.github.io/argo-helm"` | no |
+| <a name="input_helm_timeout"></a> [helm\_timeout](#input\_helm\_timeout) | Time in seconds to wait for any individual kubernetes operation (like Jobs for hooks). Defaults to 300 seconds. | `number` | `300` | no |
+| <a name="input_helm_wait"></a> [helm\_wait](#input\_helm\_wait) | Will wait until all resources are in a ready state before marking the release as successful. It will wait for as long as timeout. Defaults to true. | `bool` | `true` | no |
+| <a name="input_k8s_namespace"></a> [k8s\_namespace](#input\_k8s\_namespace) | The K8s namespace in which the argo-cd has been created | `string` | `"argo"` | no |
+| <a name="input_settings"></a> [settings](#input\_settings) | Additional settings which will be passed to the Helm chart values, see https://artifacthub.io/packages/helm/argo/argo-cd | `map(any)` | `{}` | no |
+| <a name="input_values"></a> [values](#input\_values) | Additional yaml encoded values which will be passed to the Helm chart. | `string` | `""` | no |
 
 ## Outputs
 
-| Name | Description |
-|------|-------------|
-| <a name="output_actual_node_count"></a> [actual\_node\_count](#output\_actual\_node\_count) | A computed field representing the actual number of nodes in the node pool, which is especially useful when auto-scaling is enabled. |
-| <a name="output_id"></a> [id](#output\_id) | A unique ID that can be used to identify and reference the node pool. |
-| <a name="output_nodes"></a> [nodes](#output\_nodes) | A list of nodes in the pool. Each node exports the following attributes: |
+No outputs.
 <!-- END OF PRE-COMMIT-TERRAFORM DOCS HOOK -->
